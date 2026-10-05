@@ -2,6 +2,8 @@
 
 <p align="center">Vue 3 + TypeScript + ECharts 圖表連動範例</p>
 
+<p align="center"><a href="https://edithfxx.github.io/echarts-portfolio/">🔗 線上 Demo</a></p>
+
 ---
 
 ## 📝 專案簡介
@@ -39,6 +41,7 @@
 | 堆疊圖 | 系列設定 `stack: 'total'`；圓角只加在最上層，避免每一層都有圓角 | `src/pages/BasicCharts.vue` |
 | tooltip 安全 | formatter 輸出 HTML 前先跳脫系列名稱，避免 XSS | `escapeHtml`（`src/utils/format.ts`） |
 | 可測試性 | 資料轉換與計算邏輯抽成純函式，以 Vitest 撰寫單元測試 | `src/utils/*.test.ts` |
+| CI/CD | push 到 `main` 時以 GitHub Actions 自動執行測試、打包並部署到 GitHub Pages | `.github/workflows/deploy.yml` |
 
 ---
 
@@ -112,10 +115,26 @@ npm run preview
 
 ---
 
+## 🌐 部署（GitHub Pages）
+
+push 到 `main` 後，GitHub Actions 會依序執行：
+
+```
+npm ci → npm test → npm run build → 部署 dist/ 到 GitHub Pages
+```
+
+- 設定檔為 `.github/workflows/deploy.yml`；測試沒通過就不會部署
+- `vite.config.ts` 的 `base` 設為 `/echarts-portfolio/`，對應 GitHub Pages 的子路徑，因此本地開發網址為 `http://localhost:5173/echarts-portfolio/`
+- 也可以在 repo 的 Actions 頁面按「Run workflow」手動部署
+
+---
+
 ## 🧱 專案結構
 
 ```
 📦 根目錄
+├── .github/workflows/          # GitHub Actions
+│   └── deploy.yml              # 測試、打包並部署到 GitHub Pages
 ├── src/                        # 原始碼目錄
 │   ├── pages/                  # 頁面
 │   │   ├── BasicCharts.vue     # 基本圖表
@@ -153,6 +172,7 @@ npm run preview
 | `test`     | 測試相關                 |
 | `docs`     | 文件 / 註解              |
 | `chore`    | 工具 / 套件 / 設定維護   |
+| `ci`       | 持續整合 / 部署設定      |
 
 ---
 
@@ -171,6 +191,10 @@ npm run preview
 Vue：
 
 - [組合式 API 生命週期](https://cn.vuejs.org/api/composition-api-lifecycle.html)
+
+部署：
+
+- [Vite：部署靜態站點 → GitHub Pages](https://cn.vite.dev/guide/static-deploy.html#github-pages)
 
 ---
 
